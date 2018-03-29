@@ -1,5 +1,7 @@
 package com.example.justinkhull.csci490_lab06;
 
+import android.content.Intent;
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -13,6 +15,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    Location mLastLocation;
+    LatLng currentPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Intent intent = getIntent();
+        mLastLocation = intent.getExtras().getParcelable("Location");
+        currentPos = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+
     }
 
 
@@ -42,5 +51,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        mMap.addMarker(new MarkerOptions().position(currentPos).title("Current Position"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentPos));
+
+
+
+
     }
 }
